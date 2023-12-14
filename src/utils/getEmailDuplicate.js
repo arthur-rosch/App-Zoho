@@ -23,11 +23,7 @@ export function getEmailDuplicate(recordArray) {
     const objectsDuplicate = registrationWithDuplicateEmail.filter(objeto =>
         countEmail[objeto.Email] > 1
     );
-    
-    // Mostra os objetos com emails repetidos
-    objectsDuplicate.forEach(record => {
-        console.log(`O email ${record.Email} está sendo repetido. Objeto:`, record);
-    });
+
     
     return registrationWithDuplicateEmail
 }

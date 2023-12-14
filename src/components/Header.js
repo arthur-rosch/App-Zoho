@@ -18,6 +18,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
+import { NavLink, useNavigate} from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -67,6 +68,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 }));
 
 export function Header() {
+  const navigate = useNavigate()
   const theme = useTheme();
   const [open, setOpen] = React.useState("");
 
@@ -77,6 +79,11 @@ export function Header() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  const teste = (path) => {
+    console.log("Teste")
+    navigate(path);
+  }
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -117,13 +124,28 @@ export function Header() {
         </DrawerHeader>
         <Divider />
         <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton>
+          {[{
+            name: "Home",
+            path: "/"
+          }, 
+          {
+            name: "CRM KPI",
+            path: "/teste"
+          }, 
+          {
+            name: "Analytics",
+            path: "/teste"
+          },
+          {
+            name: "Club Zen",
+            path: "/teste"
+          }].map((object, index) => (
+            <ListItem key={object.name} disablePadding>
+              <ListItemButton onClick={() => teste(object.path)}>
                 <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
                 </ListItemIcon>
-                <ListItemText primary={text} />
+                <ListItemText primary={object.name} />
               </ListItemButton>
             </ListItem>
           ))}
