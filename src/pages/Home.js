@@ -1,7 +1,8 @@
 import { Table } from "../components/Table";
 import { Header } from "../components/Header";
 import { useGetModules } from "../hooks/useGetModules";
-import { useState , useEffect, useRef, useCallback} from "react";
+import { useState , useEffect, useCallback} from "react";
+import Filter from "../components/Filter";
 
 // const ClipboardCopyButton = ({ text }) => {
 //   const textAreaRef = useRef(null);
@@ -32,9 +33,9 @@ import { useState , useEffect, useRef, useCallback} from "react";
 
 
 function Home() {
-  const [ selectTableRows, setSelectTableRows ] = useState([])
-
+  const [filter, setFilter] = useState('Todos Contatos');
   const [ allRecords, setAllRecords] = useState([])
+  const [ selectTableRows, setSelectTableRows ] = useState([])
   const [ recordsByEmailDuplicate, setRecordsByEmailDuplicate] = useState([])
 
   const { getAllRecords, getRecordsByEmailDuplicate, getCOQL} = useGetModules()
@@ -52,18 +53,6 @@ function Home() {
     setSelectTableRows(data)
   })
 
-  // const renderTable = () => {
-  //   switch (selectTableRows) {
-  //     case "All Records":
-  //       return <Table dataRecords={allRecords} selectRows={selectTableRows}/>
-    
-  //     case "E-Mail Duplicates":
-  //         return <Table dataRecords={recordsByEmailDuplicate} selectRows={selectTableRows}/>
-  //     default:
-  //       break;
-  //   }
-  // }
-
   useEffect(() => {
    getAllRecordsData()
    getRecordsByEmailDuplicateData()
@@ -75,9 +64,10 @@ function Home() {
   return (
     <div>
         <Header/>
-
-        <Table dataRecords={allRecords} />
-        <Table dataRecords={recordsByEmailDuplicate} />
+        <Filter setFilter={setFilter} filter={filter}/>
+        {
+          filter === "Todos Contatos" ? <Table dataRecords={allRecords} /> : <Table dataRecords={recordsByEmailDuplicate}/>
+        }
       </div>
   );
 }
