@@ -3,6 +3,7 @@ import { Header } from "../components/Header";
 import { useGetModules } from "../hooks/useGetModules";
 import { useState , useEffect, useCallback} from "react";
 import Filter from "../components/Filter";
+import { CustomFilterModal } from "../components/CustomFilterModal";
 
 // const ClipboardCopyButton = ({ text }) => {
 //   const textAreaRef = useRef(null);
@@ -33,12 +34,13 @@ import Filter from "../components/Filter";
 
 
 function Home() {
+  const [open, setOpen] = useState(false);
   const [filter, setFilter] = useState('Todos Contatos');
+
   const [ allRecords, setAllRecords] = useState([])
-  const [ selectTableRows, setSelectTableRows ] = useState([])
   const [ recordsByEmailDuplicate, setRecordsByEmailDuplicate] = useState([])
 
-  const { getAllRecords, getRecordsByEmailDuplicate, getCOQL} = useGetModules()
+  const { getAllRecords, getRecordsByEmailDuplicate} = useGetModules()
 
   const getAllRecordsData =  useCallback(async () => {
     const data = await getAllRecords()
@@ -48,26 +50,29 @@ function Home() {
     const data = await getRecordsByEmailDuplicate()
     setRecordsByEmailDuplicate(data)
   })
-  const getDataCOQL =  useCallback(async () => {
-    const data = await getCOQL()
-    setSelectTableRows(data)
-  })
+
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   useEffect(() => {
    getAllRecordsData()
    getRecordsByEmailDuplicateData()
-   getDataCOQL()
 
-  }, [getRecordsByEmailDuplicateData, getAllRecordsData, allRecords, recordsByEmailDuplicate, getDataCOQL, selectTableRows])
+  }, [getRecordsByEmailDuplicateData, getAllRecordsData, allRecords, recordsByEmailDuplicate])
 
 
   return (
     <div>
         <Header/>
-        <Filter setFilter={setFilter} filter={filter}/>
+        <div style={{display:"flex", alignItems: "center", justifyContent: "space-between"}}>
+         <Filter setFilter={setFilter} filter={filter}/>
+         <button onClick={handleOpen}>Teste Modal</button>
+        </div>
         {
           filter === "Todos Contatos" ? <Table dataRecords={allRecords} /> : <Table dataRecords={recordsByEmailDuplicate}/>
         }
+        <CustomFilterModal open={open} handleClose={handleClose}/>
       </div>
   );
 }

@@ -29,21 +29,29 @@ export const useGetModules = () => {
         return dataRecordsByEmailDuplicate
     }
 
-    const getCOQL = async () => {
-        let dataTest = []
+    const getCOQL = async (filedName, value, module) => {
         var config = {
-            "select_query": "select Last_Name, First_Name, Full_Name from Contacts where Email is not null limit 2"
+            "select_query": `select Last_Name, First_Name, Full_Name from ${module} where ${filedName} ${value}`
         }
-
-        await window.ZOHO.CRM.API.coql(config)
+        const result = await window.ZOHO.CRM.API.coql(config)
         .then(function(data){
-            dataTest = data
+            return data
         });
 
-        return dataTest
+        return result
+    }
+
+    const getFields = async function(moduleName) {
+        let dataFields 
+        await window.ZOHO.CRM.META.getFields({"Entity": "Contacts"}).then(function(data){
+            dataFields = data.fields;	
+        });
+
+        return dataFields
     }
 
     return {
+        getFields,
         getCOQL,
         getAllRecords,
         getRecordsByEmailDuplicate,
