@@ -1,65 +1,56 @@
+import Filter from "../components/Filter";
+import { useState , useEffect} from "react";
 import { Table } from "../components/Table";
 import { Header } from "../components/Header";
 import { useGetModules } from "../hooks/useGetModules";
-import { useState , useEffect, useCallback} from "react";
-import Filter from "../components/Filter";
 import { CustomFilterModal } from "../components/CustomFilterModal";
-
-// const ClipboardCopyButton = ({ text }) => {
-//   const textAreaRef = useRef(null);
-
-//   const handleCopyClick = () => {
-//     if (textAreaRef.current) {
-//       textAreaRef.current.select();
-
-//       try {
-//         document.execCommand('copy');
-//         console.log(`ID: ${text} do contato copiado para a área de transferência`);
-//       } catch (err) {
-//         console.error('Erro ao copiar ID do contato para a área de transferência:', err);
-//       }
-
-//       // Desfoca o textarea após a cópia para evitar problemas de foco
-//       textAreaRef.current.blur();
-//     }
-//   };
-
-//   return (
-//     <div>
-//       <textarea ref={textAreaRef} value={text} readOnly style={{ position: 'absolute', left: '-9999px' }} />
-//       <button onClick={handleCopyClick}>Copiar ID do Contato</button>
-//     </div>
-//   );
-// };
-
+import { CircularProgress } from "@mui/material";
 
 function Home() {
+  const { getAllRecords, getRecordsByEmailDuplicate} = useGetModules()
+
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState('Todos Contatos');
 
   const [ allRecords, setAllRecords] = useState([])
   const [ recordsByEmailDuplicate, setRecordsByEmailDuplicate] = useState([])
 
-  const { getAllRecords, getRecordsByEmailDuplicate} = useGetModules()
-
-  const getAllRecordsData =  useCallback(async () => {
-    const data = await getAllRecords()
-    setAllRecords(data)
-  })
-  const getRecordsByEmailDuplicateData =  useCallback(async () => {
-    const data = await getRecordsByEmailDuplicate()
-    setRecordsByEmailDuplicate(data)
-  })
-
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  useEffect(() => {
-   getAllRecordsData()
-   getRecordsByEmailDuplicateData()
+  const renderTable = (filter) => {
+    switch (filter) {
+      case "Todos Contatos":
+        return <Table dataRecords={allRecords} />;
+      case "E-mail duplicados":
+        return <Table dataRecords={recordsByEmailDuplicate} />;
+      default:
+        return <Table dataRecords={allRecords} />;
+    }
+  };
 
-  }, [getRecordsByEmailDuplicateData, getAllRecordsData, allRecords, recordsByEmailDuplicate])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(async () => {
+    const fetchData = async () => {
+      try {
+        const allRecordsData = await getAllRecords("Contacts");
+        setAllRecords(allRecordsData);
+  
+        const recordsByEmailDuplicateData = await getRecordsByEmailDuplicate("Contacts");
+        setRecordsByEmailDuplicate(recordsByEmailDuplicateData);
+
+        setLoading(false);
+      } catch (error) {
+        setLoading(true);
+        console.error('Error fetching data:', error);
+      }
+    };
+  
+    fetchData();
+
+  }, [getAllRecords, getRecordsByEmailDuplicate])
 
 
   return (
@@ -69,9 +60,11 @@ function Home() {
          <Filter setFilter={setFilter} filter={filter}/>
          <button onClick={handleOpen}>Teste Modal</button>
         </div>
-        {
-          filter === "Todos Contatos" ? <Table dataRecords={allRecords} /> : <Table dataRecords={recordsByEmailDuplicate}/>
+        {loading 
+          ? <CircularProgress />
+          : renderTable(filter)
         }
+        
         <CustomFilterModal open={open} handleClose={handleClose}/>
       </div>
   );

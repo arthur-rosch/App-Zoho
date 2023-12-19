@@ -9,10 +9,11 @@ import { useGetModules } from '../hooks/useGetModules';
 
 
 /**
- * Refatorar a home
- * Deixar função do zoho Sdk todas dinâmicas
+ * Refatorar a home X
+ * Deixar função do zoho Sdk todas dinâmicas X
  * Arrumas listagem do fields, listar label e dar set no api_name
  * Quando ele puxar pelo COQL tenho que mostrar isso em uma tabela nova
+ * Tratamento de Erro e Loading
  */
 const style = {
   position: 'absolute',
@@ -39,7 +40,7 @@ export function CustomFilterModal({open, handleClose,}) {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const teste = async () => {
-        const data = await getFields()
+        const data = await getFields("Contacts")
         const fieldsMap = data.map((item) => {
             return {
                 name: item.api_name,
