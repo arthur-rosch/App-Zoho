@@ -5,8 +5,10 @@ import { Header } from "../components/Header";
 import { useGetModules } from "../hooks/useGetModules";
 import { CustomFilterModal } from "../components/CustomFilterModal";
 import { Button, CircularProgress } from "@mui/material";
+import { useQuery } from "../hooks/useQuery";
 
 function Home() {
+  const { queryCOQL } = useQuery()
   const { getAllRecords, getRecordsByEmailDuplicate} = useGetModules()
 
   const [open, setOpen] = useState(false);

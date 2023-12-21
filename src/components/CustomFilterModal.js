@@ -7,6 +7,7 @@ import FormControl from '@mui/material/FormControl';
 import { useEffect, useState } from 'react';
 import { useGetModules } from '../hooks/useGetModules';
 import { Button } from '@mui/material';
+import { useQuery } from '../hooks/useQuery';
 
 
 /**
@@ -31,6 +32,7 @@ const style = {
 
 
 export function CustomFilterModal({open, handleClose,}) {
+    const { handleSetQuery } = useQuery()
     const { getFields, getCOQL} = useGetModules()
 
     const [fields, setFields] = useState([{}])
@@ -57,8 +59,7 @@ export function CustomFilterModal({open, handleClose,}) {
         const queryCOQL =  {
             "select_query": `select Last_Name, First_Name, Full_Name from ${module} where ${fieldValue} ${valueType}`
         }
-
-
+        handleSetQuery(queryCOQL)
     }
 
     const handleChange = async (event, nameState) => {
