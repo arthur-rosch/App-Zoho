@@ -6,15 +6,17 @@ import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import { useEffect, useState } from 'react';
 import { useGetModules } from '../hooks/useGetModules';
+import { Button } from '@mui/material';
 
 
 /**
  * Refatorar a home X
  * Deixar função do zoho Sdk todas dinâmicas X
- * Arrumas listagem do fields, listar label e dar set no api_name
- * Quando ele puxar pelo COQL tenho que mostrar isso em uma tabela nova
+ * Arrumas listagem do fields, listar label e dar set no api_name X
+ * Quando ele puxar pelo COQL tenho que mostrar isso em uma tabela nova 
  * Tratamento de Erro e Loading
  */
+
 const style = {
   position: 'absolute',
   top: '50%',
@@ -51,9 +53,12 @@ export function CustomFilterModal({open, handleClose,}) {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    const getDataCOQL = async () => {  
-        const data = await getCOQL(fieldValue, valueType, module)
-        console.log(data, "Data Coql")
+    const createQueryCOQL = async () => {
+        const queryCOQL =  {
+            "select_query": `select Last_Name, First_Name, Full_Name from ${module} where ${fieldValue} ${valueType}`
+        }
+
+
     }
 
     const handleChange = async (event, nameState) => {
@@ -126,7 +131,7 @@ export function CustomFilterModal({open, handleClose,}) {
                         <MenuItem value={"is not null"}>Is not null</MenuItem>
                         <MenuItem value={"is empty"}>Is empty</MenuItem>
                     </Select>
-                    <button onClick={getDataCOQL}>Teste Coql</button>
+                    <Button variant="outlined" onClick={createQueryCOQL}>Criar Filtro</Button>
         </FormControl>
         </Box>
         </Modal>

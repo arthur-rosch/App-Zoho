@@ -4,7 +4,7 @@ import { Table } from "../components/Table";
 import { Header } from "../components/Header";
 import { useGetModules } from "../hooks/useGetModules";
 import { CustomFilterModal } from "../components/CustomFilterModal";
-import { CircularProgress } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 
 function Home() {
   const { getAllRecords, getRecordsByEmailDuplicate} = useGetModules()
@@ -20,7 +20,7 @@ function Home() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const renderTable = (filter) => {
+  const renderTable = () => {
     switch (filter) {
       case "Todos Contatos":
         return <Table dataRecords={allRecords} />;
@@ -33,6 +33,7 @@ function Home() {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(async () => {
+    console.log("Teste")
     const fetchData = async () => {
       try {
         const allRecordsData = await getAllRecords("Contacts");
@@ -58,13 +59,10 @@ function Home() {
         <Header/>
         <div style={{display:"flex", alignItems: "center", justifyContent: "space-between"}}>
          <Filter setFilter={setFilter} filter={filter}/>
-         <button onClick={handleOpen}>Teste Modal</button>
+         <Button variant="outlined" onClick={handleOpen}>Criar Filtro</Button>
         </div>
-        {loading 
-          ? <CircularProgress />
-          : renderTable(filter)
-        }
-        
+        {loading ? <CircularProgress/> : renderTable()}
+        <Table dataRecords={allRecords} />
         <CustomFilterModal open={open} handleClose={handleClose}/>
       </div>
   );
