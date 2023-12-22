@@ -3,7 +3,7 @@ import { getEmailDuplicate } from "../utils/getEmailDuplicate"
 export const useGetModules = () => {
     const getAllRecords = async (module) => {
         let dataRecords = []
-        await window.ZOHO.CRM.API.getAllRecords({Entity: module, sort_order:"asc",per_page:5,page:1})
+        await window.ZOHO.CRM.API.getAllRecords({Entity: "Contacts", sort_order:"asc",per_page:5,page:1})
         .then(function(data){
             dataRecords = data.data
         })
@@ -12,7 +12,7 @@ export const useGetModules = () => {
 
     const getRecordsByEmailDuplicate = async (module) => {
         let dataRecordsByEmailDuplicate = []
-        await window.ZOHO.CRM.API.getAllRecords({Entity: module,sort_order:"asc",per_page:5,page:1})
+        await window.ZOHO.CRM.API.getAllRecords({Entity: "Contacts",sort_order:"asc",per_page:5,page:1})
         .then(function(data){
             dataRecordsByEmailDuplicate = getEmailDuplicate(data.data);
         })
@@ -33,7 +33,7 @@ export const useGetModules = () => {
 
     const getFields = async function(moduleName) {
         let dataFields 
-        await window.ZOHO.CRM.META.getFields({"Entity": moduleName}).then(function(data){
+        await window.ZOHO.CRM.META.getFields({"Entity": "Contacts"}).then(function(data){
             dataFields = data.fields;	
         });
 

@@ -4,6 +4,8 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import { useQuery } from '../hooks/useQuery';
+import { queryByTestId } from '@testing-library/react';
 
 /**
  * @typedef {object} FilterProps
@@ -24,8 +26,11 @@ export default function Filter({setFilter, filter}) {
    * @param {React.ChangeEvent<{ value: unknown }>} event - Evento de mudança.
    */
 
+  const { queryCOQL } = useQuery()
+
   const handleChange = (event) => {
     console.log(filter)
+    console.log(queryCOQL)
     setFilter(event.target.value);
   };
 
@@ -42,6 +47,11 @@ export default function Filter({setFilter, filter}) {
         >
           <MenuItem value={"Todos Contatos"}>Todos Contatos</MenuItem>
           <MenuItem value={"E-mail duplicados"}>E-mail duplicados</MenuItem>
+          {queryCOQL.map((query) => {
+            return (
+              <MenuItem value={query.select_query}>{query.name}</MenuItem>
+            )
+          })}
         </Select>
       </FormControl>
     </Box>

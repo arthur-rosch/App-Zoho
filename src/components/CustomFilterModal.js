@@ -15,7 +15,7 @@ import { useQuery } from '../hooks/useQuery';
  * Deixar função do zoho Sdk todas dinâmicas X
  * Arrumas listagem do fields, listar label e dar set no api_name X
  * Quando ele puxar pelo COQL tenho que mostrar isso em uma tabela nova 
- * Tratamento de Erro e Loading
+ * Tratamento de Erro e Loading X
  */
 
 const style = {
@@ -57,8 +57,10 @@ export function CustomFilterModal({open, handleClose,}) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const createQueryCOQL = async () => {
         const queryCOQL =  {
+            "name": "Teste",
             "select_query": `select Last_Name, First_Name, Full_Name from ${module} where ${fieldValue} ${valueType}`
         }
+        console.log(queryCOQL)
         handleSetQuery(queryCOQL)
     }
 
@@ -91,47 +93,51 @@ export function CustomFilterModal({open, handleClose,}) {
         >
         <Box sx={style}>
             <FormControl fullWidth>
-                
-                    <InputLabel id="demo-simple-select-label">Module</InputLabel>
-                    <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={module}
-                    label="Module"
-                    onChange={(e) => handleChange(e,"Module")}
-                    >
-                        <MenuItem value={"Deal"}>Deal</MenuItem>
-                        <MenuItem value={"Leads"}>Leads</MenuItem>
-                        <MenuItem value={"Contacts"}>Contacts</MenuItem>
-                    </Select>
-                
-                
-                    <InputLabel id="demo-simple-select-label">Fields</InputLabel>
-                    <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={fieldValue}
-                    label="Fields"
-                    onChange={(e) => handleChange(e,"Fields")}
-                    >
-                        {fields.map((item) => {
-                            return <MenuItem value={item.name}>{item.name}</MenuItem>
-                        })}
-                    </Select>
+                    <div style={{ width: "25%"}}>
+                        <InputLabel id="demo-simple-select-label">Module</InputLabel>
+                        <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={module}
+                        label="Module"
+                        onChange={(e) => handleChange(e,"Module")}
+                        >
+                            <MenuItem value={"Deal"}>Deal</MenuItem>
+                            <MenuItem value={"Leads"}>Leads</MenuItem>
+                            <MenuItem value={"Contacts"}>Contacts</MenuItem>
+                        </Select>
+                    </div>
 
+                    <div style={{ width: "25%"}}>
+                        <InputLabel id="demo-simple-select-label">Fields</InputLabel>
+                        <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={fieldValue}
+                        label="Fields"
+                        onChange={(e) => handleChange(e,"Fields")}
+                        >
+                            {fields.map((item) => {
+                                return <MenuItem value={item.name}>{item.name}</MenuItem>
+                            })}
+                        </Select>
+                    </div>
+                
+                    <div style={{ width: "25%"}}>
+                        <InputLabel id="demo-simple-select-label">Fields</InputLabel>
+                        <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={valueType}
+                        label="Valor do Field"
+                        onChange={(e) => handleChange(e,"Value Type")}
+                        >
+                            <MenuItem value={"null"}>Null</MenuItem>
+                            <MenuItem value={"is not null"}>Is not null</MenuItem>
+                            <MenuItem value={"is empty"}>Is empty</MenuItem>
+                        </Select>
+                    </div>
 
-                    <InputLabel id="demo-simple-select-label">Fields</InputLabel>
-                    <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={valueType}
-                    label="Valor do Field"
-                    onChange={(e) => handleChange(e,"Value Type")}
-                    >
-                        <MenuItem value={"null"}>Null</MenuItem>
-                        <MenuItem value={"is not null"}>Is not null</MenuItem>
-                        <MenuItem value={"is empty"}>Is empty</MenuItem>
-                    </Select>
                     <Button variant="outlined" onClick={createQueryCOQL}>Criar Filtro</Button>
         </FormControl>
         </Box>

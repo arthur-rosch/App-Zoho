@@ -8,7 +8,6 @@ import { Button, CircularProgress } from "@mui/material";
 import { useQuery } from "../hooks/useQuery";
 
 function Home() {
-  const { queryCOQL } = useQuery()
   const { getAllRecords, getRecordsByEmailDuplicate} = useGetModules()
 
   const [open, setOpen] = useState(false);
@@ -33,27 +32,22 @@ function Home() {
     }
   };
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(async () => {
+  const fetchData = async () => {
+      const allRecordsData = await getAllRecords();
+      console.log(allRecordsData)
+      setAllRecords(allRecordsData);
+
+      const recordsByEmailDuplicateData = await getRecordsByEmailDuplicate();
+      setRecordsByEmailDuplicate(recordsByEmailDuplicateData);
+
+      setLoading(false);
+  };
+
+  //eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
     console.log("Teste")
-    const fetchData = async () => {
-      try {
-        const allRecordsData = await getAllRecords("Contacts");
-        setAllRecords(allRecordsData);
-  
-        const recordsByEmailDuplicateData = await getRecordsByEmailDuplicate("Contacts");
-        setRecordsByEmailDuplicate(recordsByEmailDuplicateData);
-
-        setLoading(false);
-      } catch (error) {
-        setLoading(true);
-        console.error('Error fetching data:', error);
-      }
-    };
-  
-    fetchData();
-
-  }, [getAllRecords, getRecordsByEmailDuplicate])
+    fetchData()
+  }, [])
 
 
   return (
@@ -64,7 +58,6 @@ function Home() {
          <Button variant="outlined" onClick={handleOpen}>Criar Filtro</Button>
         </div>
         {loading ? <CircularProgress/> : renderTable()}
-        <Table dataRecords={allRecords} />
         <CustomFilterModal open={open} handleClose={handleClose}/>
       </div>
   );

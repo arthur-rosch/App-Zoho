@@ -2932,6 +2932,11 @@
   "resolved" "https://registry.npmmirror.com/at-least-node/-/at-least-node-1.0.0.tgz"
   "version" "1.0.0"
 
+"audit@^0.0.6":
+  "integrity" "sha512-xgv3Y3RIYE00N2/xk10VLlwFd1kjc7FRaX1vC8+CsOfDRe53a06vOSkp91BOSNijZfddYum47a1Fvju/2+JPcw=="
+  "resolved" "https://registry.npmmirror.com/audit/-/audit-0.0.6.tgz"
+  "version" "0.0.6"
+
 "autoprefixer@^10.4.11":
   "integrity" "sha512-49vKpMqcZYsJjwotvt4+h/BCjJVnhGwcLpDt5xkcaOG3eLrG/HUYLagrihYsQ+qrIBgIzX1Rw7a6L8I/ZA1Atg=="
   "resolved" "https://registry.npmmirror.com/autoprefixer/-/autoprefixer-10.4.13.tgz"

@@ -45,8 +45,8 @@ export function Table({dataRecords}) {
             },
           },
         }}
-        pageSizeOptions={[5]}
         checkboxSelection
+        pageSizeOptions={[5]}
         disableRowSelectionOnClick
       />
     </Box>
